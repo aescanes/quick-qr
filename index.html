@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuickQR</title>
+</head>
+<body>
+<header class="top">
+  <h1>quick<span>-qr</span></h1>
+  <p>Styled QR codes from text or URLs. Everything runs on your device.</p>
+</header>
+
+<main class="layout">
+  <form id="form" class="controls" autocomplete="off">
+
+    <section class="card">
+      <h2>Content</h2>
+      <textarea id="data" rows="3" placeholder="https://example.com or any text" spellcheck="false">https://github.com</textarea>
+      <label class="row">Error correction
+        <select id="error">
+          <option value="L">Low (7%)</option>
+          <option value="M" selected>Medium (15%)</option>
+          <option value="Q">Quartile (25%)</option>
+          <option value="H">High (30%)</option>
+        </select>
+      </label>
+      <p class="hint" id="ec-hint" hidden>A logo is set, so High is used automatically.</p>
+    </section>
+
+    <section class="card">
+      <h2>Colors</h2>
+      <div class="grid2">
+        <label>Foreground <input type="color" id="fg" value="#111827"></label>
+        <label>Background <input type="color" id="bg" value="#ffffff"></label>
+      </div>
+      <label class="check"><input type="checkbox" id="transparent"> Transparent background</label>
+      <label class="row">Gradient
+        <select id="gradient">
+          <option value="none">None</option>
+          <option value="horizontal">Horizontal</option>
+          <option value="vertical">Vertical</option>
+          <option value="diagonal">Diagonal</option>
+          <option value="radial">Radial</option>
+        </select>
+      </label>
+      <label id="fg2-wrap" hidden>Gradient end color <input type="color" id="fg2" value="#7c3aed"></label>
+      <label class="check"><input type="checkbox" id="eye-custom"> Custom corner-eye color
+        <input type="color" id="eyeColor" value="#7c3aed" disabled></label>
+    </section>
+
+    <section class="card">
+      <h2>Style</h2>
+      <div class="field"><span>Dots</span>
+      <div class="seg" id="moduleStyle">
+        <button type="button" data-value="square" class="on">Square</button>
+        <button type="button" data-value="rounded">Rounded</button>
+        <button type="button" data-value="dots">Dots</button>
+        <button type="button" data-value="diamond">Diamond</button>
+        <button type="button" data-value="vertical">Vertical</button>
+        <button type="button" data-value="horizontal">Horizontal</button>
+      </div>
+      </div>
+      <div class="field"><span>Corner eyes</span>
+      <div class="seg" id="eyeStyle">
+        <button type="button" data-value="square" class="on">Square</button>
+        <button type="button" data-value="rounded">Rounded</button>
+        <button type="button" data-value="circle">Circle</button>
+      </div>
+      </div>
+      <label class="row">Margin <input type="range" id="border" min="0" max="10" value="4"><output></output></label>
+    </section>
+
+    <section class="card">
+      <h2>Logo <small>from <a href="https://lucide.dev/icons/" target="_blank" rel="noopener">Lucide</a></small></h2>
+      <div class="logo-head">
+        <input type="search" id="icon-search" placeholder="Search icons (heart, wifi, phone…)">
+        <button type="button" id="icon-clear" class="ghost">No logo</button>
+      </div>
+      <div id="icon-grid" class="icons" role="listbox" aria-label="Icons"></div>
+      <p class="hint" id="icon-count"></p>
+      <div id="logo-opts" hidden>
+        <div class="grid2">
+          <label>Icon color <input type="color" id="logoColor" value="#111827"></label>
+          <label>Icon backing <input type="color" id="logoBg" value="#ffffff"></label>
+        </div>
+        <label class="row">Size <input type="range" id="logoScale" min="0.08" max="0.28" step="0.01" value="0.22"><output></output></label>
+        <label class="row">Stroke <input type="range" id="logoStroke" min="0.5" max="3" step="0.25" value="2"><output></output></label>
+      </div>
+    </section>
+  </form>
+
+  <aside class="preview">
+    <div class="frame" id="frame" aria-live="polite"></div>
+    <p class="error" id="error-msg" hidden></p>
+    <p class="meta" id="meta"></p>
+    <div class="actions">
+      <button type="button" id="dl-svg" class="primary">Save SVG</button>
+      <button type="button" id="dl-png" class="primary">Save PNG</button>
+      <select id="png-size" title="PNG size">
+        <option>512</option><option selected>1024</option><option>2048</option><option>4096</option>
+      </select>
+    </div>
+  </aside>
+</main>
+
+<footer>QuickQR · icons by <a href="https://lucide.dev" target="_blank" rel="noopener">Lucide</a> (ISC)</footer>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

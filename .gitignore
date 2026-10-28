@@ -1,0 +1,9 @@
+node_modules/
+dist/
+src/generated/
+src-tauri/target/
+src-tauri/gen/
+__pycache__/
+*.egg-info/
+.venv/
+.DS_Store
