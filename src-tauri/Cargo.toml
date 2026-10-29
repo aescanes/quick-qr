@@ -1,6 +1,6 @@
 [package]
 name = "QuickQR"
-version = "0.1.0"
+version = "0.2.0"
 description = "Styled QR codes from text or URLs"
 license = "MIT"
 edition = "2021"
