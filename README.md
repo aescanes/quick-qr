@@ -11,6 +11,7 @@ Make good-looking QR codes from text or URLs. One TypeScript codebase runs as a 
 
 ```bash
 npm install
+npm run setup        # once: installs the git pre-commit hook (npm scripts are disabled by .npmrc)
 npm run dev          # web app at http://localhost:5173
 npm test             # renderer tests
 npm run build        # web build -> dist/
