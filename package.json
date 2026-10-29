@@ -10,12 +10,16 @@
     "build": "npm run icons && tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "npm run icons && vitest run",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "prepare": "husky",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm run typecheck && npm test"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.12.4",
     "@types/node": "^26.6.6",
     "@xmldom/xmldom": "^0.9.12",
+    "husky": "^9.1.7",
     "lucide-static": "^1.63.0",
     "typescript": "^7.0.2",
     "uqr": "^0.1.3",
