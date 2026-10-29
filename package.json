@@ -14,7 +14,12 @@
     "prepare": "husky",
     "typecheck": "tsc --noEmit",
     "validate": "npm run typecheck && npm test",
-    "setup": "husky"
+    "setup": "husky",
+    "version": "node scripts/version-changelog.mjs && node scripts/version-bump.mjs && git add CHANGELOG.md src-tauri/tauri.conf.json src-tauri/Cargo.toml src-tauri/Cargo.lock",
+    "postversion": "node scripts/version-tag.mjs",
+    "version-patch": "npm version patch --ignore-scripts=false",
+    "version-minor": "npm version minor --ignore-scripts=false",
+    "version-major": "npm version major --ignore-scripts=false"
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.12.4",
