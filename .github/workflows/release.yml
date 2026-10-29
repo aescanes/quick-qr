@@ -1,8 +1,10 @@
 # Builds desktop installers for macOS (Apple Silicon + Intel), Windows and Linux
-# and attaches them to a draft GitHub release.
+# and attaches them to a draft GitHub release. Installers are only ever built after the tests pass.
+#
+# Policy: desktop releases come from version tags (v*) only, never from commits to main.
 #
 # DISABLED for now: the desktop release is paused while the UI and web version are built.
-# It only runs when started by hand from the Actions tab. To re-enable the automatic release,
+# It only runs when started by hand from the Actions tab. To re-enable the tag-triggered release,
 # replace `workflow_dispatch:` below with:
 #   push:
 #     tags: ["v*"]
@@ -10,8 +12,23 @@ name: Release
 on:
   workflow_dispatch:
 
+# Never run two releases at once; let a running one finish instead of cancelling it.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm test
+
   desktop:
+    needs: test # no installers are built if the tests fail
     permissions:
       contents: write
     strategy:

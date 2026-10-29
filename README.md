@@ -39,7 +39,7 @@ With a logo set, error correction is forced to **High (30%)** and the modules un
 ## Releases
 
 - Desktop releases are **paused** while the UI and web version are being built. `.github/workflows/release.yml` (installers for macOS, Windows and Linux into a draft GitHub release) only runs when started manually; the `v*` tag trigger will be restored later.
-- Pushes to `main` publish the web build to GitHub Pages (`.github/workflows/pages.yml`).
+- Pushing a version tag like `v0.1.0` publishes the web build to GitHub Pages (`.github/workflows/pages.yml`), but only if the tests pass. Ordinary pushes to `main` do not deploy. One-time setup: Settings ▸ Pages ▸ Source: **GitHub Actions**, and in Settings ▸ Environments ▸ `github-pages` add a deployment tag rule `v*`.
 - Installers are unsigned. macOS and Windows will show a first-run warning until you add signing certificates.
 
 ## Scanning tips

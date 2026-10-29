@@ -1,16 +1,38 @@
-# Publishes the web build to GitHub Pages (enable Pages -> Source: GitHub Actions in repo settings).
+# Publishes the web build to GitHub Pages when a version tag (v*) is pushed, e.g. v0.1.0.
+# The deploy only runs if the tests pass.
+#
+# One-time setup in the GitHub repo:
+#   1. Settings -> Pages -> Source: GitHub Actions
+#   2. Settings -> Environments -> github-pages -> Deployment branches and tags:
+#      add a tag rule `v*` (by default only the main branch may deploy, which blocks tag runs)
 name: Pages
 on:
-  push: { branches: [main] }
-  workflow_dispatch:
+  push:
+    tags: ["v*"]
+  workflow_dispatch: # manual run, from the main branch only (see environment rule above)
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Never run two deploys at once; let a running deploy finish instead of cancelling it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm test
+
   deploy:
+    needs: test # skipped if the tests fail
     runs-on: ubuntu-latest
     environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
     steps:
