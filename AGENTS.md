@@ -33,6 +33,9 @@ form controls (src/main.ts)
 | `src/render.ts` | Core. Pure functions, no DOM. `normalize()` validates/clamps options and throws `QRError`; `renderSvg()` builds the matrix (`uqr`) and draws module shapes, finder "eyes", gradients and the logo cut-out as a single SVG. |
 | `src/main.ts` | UI wiring: reads form state, calls `renderSvg` (debounced), icon picker, save buttons. Vanilla TS, no framework. |
 | `src/save.ts` | `saveFile()` (Tauri dialog + fs plugins when `__TAURI_INTERNALS__` exists, browser download otherwise) and `svgToPng()` (canvas rasterisation). |
+| `src/print.ts` | Pure pixel <-> cm maths (`pxToCm`, `cmToPx`, `dotMm`) and the print/scan limits used by the Print size helper. |
+| `src/png.ts` | Pure `withPngDpi()`: inserts a `pHYs` chunk into a PNG so apps open it at the chosen physical size (canvas PNGs carry no DPI). |
+| `src/settings.ts` | Pure, DOM-free persistence: `Settings` type, `parseSettings()` (validates and clamps every field read from storage, never throws), `loadSettings`/`saveSettings`/`clearSettings` (all tolerate missing or throwing `localStorage`). Key is versioned (`quickqr:settings:v1`); bump it for incompatible changes. `main.ts` saves on every render and on `pagehide`, restores at startup, and re-applies the saved logo once the lazy icon set has loaded. |
 | `src/style.css`, `index.html` | Static page and styles (light/dark via `prefers-color-scheme`). `index.html` is the Vite entry and loads `src/main.ts` as a module. |
 | `vite.config.ts` | Vite + Vitest config. Fixed dev port `5173` (`strictPort`) and relative `base: "./"`, both required by Tauri (`devUrl` / `frontendDist` in `tauri.conf.json`). Build output goes to `dist/`. |
 | `tsconfig.json` | Strict TypeScript, `noEmit`; Vite does the transpiling, `tsc --noEmit` only type-checks (runs in `npm run build`). |

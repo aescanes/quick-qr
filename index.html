@@ -7,7 +7,7 @@
 </head>
 <body>
 <header class="top">
-  <h1>quick<span>-qr</span></h1>
+  <h1>QuickQR</h1>
   <p>Styled QR codes from text or URLs. Everything runs on your device.</p>
 </header>
 
@@ -94,17 +94,41 @@
     <div class="frame" id="frame" aria-live="polite"></div>
     <p class="error" id="error-msg" hidden></p>
     <p class="meta" id="meta"></p>
+    <details class="print" id="print">
+      <summary>Print size</summary>
+      <div class="print-body">
+        <label class="row">Width
+          <span class="inline"><input type="number" id="print-cm" min="0.5" max="500" step="0.1" value="5"> cm</span>
+        </label>
+        <label class="row">Resolution
+          <select id="print-dpi" title="Print resolution">
+            <option value="72">72 DPI (screen)</option>
+            <option value="150">150 DPI (draft)</option>
+            <option value="300" selected>300 DPI (print)</option>
+            <option value="600">600 DPI (fine print)</option>
+          </select>
+        </label>
+        <p class="hint" id="print-result"></p>
+        <button type="button" id="print-apply" class="ghost">Set PNG size</button>
+        <p class="hint" id="print-selected"></p>
+        <p class="hint" id="print-dot"></p>
+      </div>
+    </details>
     <div class="actions">
       <button type="button" id="dl-svg" class="primary">Save SVG</button>
       <button type="button" id="dl-png" class="primary">Save PNG</button>
-      <select id="png-size" title="PNG size">
-        <option>512</option><option selected>1024</option><option>2048</option><option>4096</option>
+      <select id="png-size" title="PNG size in pixels">
+        <option value="256">256 px</option>
+        <option value="512">512 px</option>
+        <option value="1024" selected>1024 px</option>
+        <option value="2048">2048 px</option>
+        <option value="4096">4096 px</option>
       </select>
     </div>
   </aside>
 </main>
 
-<footer>QuickQR · icons by <a href="https://lucide.dev" target="_blank" rel="noopener">Lucide</a> (ISC)</footer>
+<footer><button type="button" id="reset" class="linklike" title="Forget saved settings and restore the defaults">Reset settings</button> · QuickQR · icons by <a href="https://lucide.dev" target="_blank" rel="noopener">Lucide</a> (ISC)</footer>
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
