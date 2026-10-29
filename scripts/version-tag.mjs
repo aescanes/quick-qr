@@ -8,6 +8,7 @@
 
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { releaseNotes } from "./release-notes.mjs";
 
 const version = process.env.npm_package_version;
 
@@ -28,9 +29,7 @@ try {
   process.exit(0);
 }
 
-// Sections are delimited by level-2 headings ("## [x.y.z] - date").
-const section = changelog.split(/\n## /).find((part) => part.startsWith(`[${version}]`));
-const body = section ? section.slice(section.indexOf("\n") + 1).trim() : "";
+const body = releaseNotes(version, changelog);
 
 if (!body) {
   console.warn(`version-tag: no "## [${version}]" section in CHANGELOG.md; keeping the default tag message.`);

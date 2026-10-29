@@ -1,10 +1,5 @@
 # Publishes the web build to GitHub Pages when a version tag (v*) is pushed, e.g. v0.1.0.
 # The deploy only runs if the tests pass.
-#
-# One-time setup in the GitHub repo:
-#   1. Settings -> Pages -> Source: GitHub Actions
-#   2. Settings -> Environments -> github-pages -> Deployment branches and tags:
-#      add a tag rule `v*` (by default only the main branch may deploy, which blocks tag runs)
 name: Pages
 on:
   push:
@@ -25,9 +20,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 24, cache: npm }
       - run: npm ci
       - run: npm test
 
@@ -36,12 +31,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 24, cache: npm }
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with: { path: dist }
       - id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

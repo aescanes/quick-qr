@@ -11,6 +11,10 @@
 name: Release
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to release (e.g. v0.2.0)"
+        required: true
 
 # Never run two releases at once; let a running one finish instead of cancelling it.
 concurrency:
@@ -21,16 +25,35 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 24, cache: npm }
       - run: npm ci
       - run: npm test
 
+  # The release body is the matching CHANGELOG.md section; fails if it is missing or empty.
+  notes:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      body: ${{ steps.notes.outputs.body }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { ref: "${{ inputs.tag || github.ref_name }}" }
+      - id: notes
+        run: |
+          {
+            echo "body<<RELEASE_NOTES_EOF"
+            node scripts/release-notes.mjs "${{ inputs.tag || github.ref_name }}"
+            echo "RELEASE_NOTES_EOF"
+          } >> "$GITHUB_OUTPUT"
+
   desktop:
-    needs: test # no installers are built if the tests fail
+    needs: [test, notes] # no installers are built if the tests fail
     permissions:
       contents: write
+      id-token: write # sign the build provenance attestation
+      attestations: write
     strategy:
       fail-fast: false
       matrix:
@@ -41,9 +64,10 @@ jobs:
           - { platform: windows-latest, args: "" }
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+      - uses: actions/checkout@v7
+        with: { ref: "${{ inputs.tag || github.ref_name }}" }
+      - uses: actions/setup-node@v7
+        with: { node-version: 24, cache: npm }
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
@@ -55,11 +79,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - run: npm ci
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@v1
+        id: tauri
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: "QuickQR ${{ github.ref_name }}"
+          tagName: ${{ inputs.tag || github.ref_name }}
+          releaseName: "QuickQR ${{ inputs.tag || github.ref_name }}"
+          releaseBody: ${{ needs.notes.outputs.body }}
           releaseDraft: true
           args: ${{ matrix.args }}
+      # artifactPaths is a JSON array; the attest action wants one path per line.
+      - name: List installers
+        id: installers
+        env:
+          ARTIFACT_PATHS: ${{ steps.tauri.outputs.artifactPaths }}
+        run: |
+          node -e 'const l = JSON.parse(process.env.ARTIFACT_PATHS).join("\n"); require("fs").appendFileSync(process.env.GITHUB_OUTPUT, "paths<<EOF\n" + l + "\nEOF\n")'
+      # Verify with: gh attestation verify <installer> --repo aescanes/quick-qr
+      - uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: ${{ steps.installers.outputs.paths }}
