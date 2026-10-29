@@ -26,8 +26,6 @@ export interface Settings {
   icon: string | null;
   logoColor: string;
   logoBg: string;
-  /** True once the user picked the logo backing color themselves (stops it following the background). */
-  logoBgTouched: boolean;
   logoScale: number;
   logoStroke: number;
   printCm: number;
@@ -59,7 +57,7 @@ export function parseSettings(raw: string | null): Partial<Settings> {
   const color = (k: "fg" | "fg2" | "bg" | "eyeColor" | "logoColor" | "logoBg") => {
     if (typeof obj[k] === "string" && COLOR_RE.test(obj[k] as string)) out[k] = obj[k] as string;
   };
-  const bool = (k: "transparent" | "eyeCustom" | "logoBgTouched") => {
+  const bool = (k: "transparent" | "eyeCustom") => {
     if (typeof obj[k] === "boolean") out[k] = obj[k] as boolean;
   };
   const range = (k: "border" | "logoScale" | "logoStroke" | "printCm", lo: number, hi: number) => {
@@ -75,7 +73,7 @@ export function parseSettings(raw: string | null): Partial<Settings> {
   if (oneOf(DPI_CHOICES, obj.printDpi)) out.printDpi = obj.printDpi;
   if (obj.icon === null || (typeof obj.icon === "string" && ICON_RE.test(obj.icon))) out.icon = obj.icon as string | null;
   for (const k of ["fg", "fg2", "bg", "eyeColor", "logoColor", "logoBg"] as const) color(k);
-  for (const k of ["transparent", "eyeCustom", "logoBgTouched"] as const) bool(k);
+  for (const k of ["transparent", "eyeCustom"] as const) bool(k);
   range("border", 0, 10);
   range("logoScale", 0.05, MAX_LOGO_SCALE);
   range("logoStroke", 0.5, 4);

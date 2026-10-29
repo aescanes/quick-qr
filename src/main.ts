@@ -8,7 +8,7 @@ import { clearSettings, loadSettings, saveSettings, type Settings } from "./sett
 const $ = <T extends HTMLElement = HTMLInputElement>(id: string) => document.getElementById(id) as T;
 const MAX_SHOWN = 120;
 
-const state = { icon: null as string | null, svg: "", totalModules: 0, pendingIcon: null as string | null, names: [] as string[], icons: {} as Record<string, string> };
+const state = { icon: null as string | null, svg: "", totalModules: 0, errorChoice: "M" as Settings["error"], pendingIcon: null as string | null, names: [] as string[], icons: {} as Record<string, string> };
 
 const segValue = (id: string) => $(id).querySelector<HTMLElement>(".on")!.dataset.value!;
 
@@ -63,7 +63,7 @@ function render() {
 function collect(): Settings {
   return {
     data: $("data").value,
-    error: $("error").value as Settings["error"],
+    error: state.errorChoice, // the user's own pick, not the High forced by a logo
     fg: $("fg").value,
     fg2: $("fg2").value,
     gradient: $("gradient").value as Settings["gradient"],
@@ -78,7 +78,6 @@ function collect(): Settings {
     icon: state.names.length ? state.icon : state.pendingIcon,
     logoColor: $("logoColor").value,
     logoBg: $("logoBg").value,
-    logoBgTouched,
     logoScale: +$("logoScale").value,
     logoStroke: +$("logoStroke").value,
     printCm: +$("print-cm").value,
@@ -101,7 +100,7 @@ function applySettings(s: Partial<Settings>) {
     if (v !== undefined) $(id).checked = v;
   };
   set("data", s.data);
-  set("error", s.error);
+  if (s.error) state.errorChoice = s.error;
   set("fg", s.fg);
   set("fg2", s.fg2);
   set("gradient", s.gradient);
@@ -115,7 +114,6 @@ function applySettings(s: Partial<Settings>) {
   set("border", s.border);
   set("logoColor", s.logoColor);
   set("logoBg", s.logoBg);
-  logoBgTouched = s.logoBgTouched ?? false;
   set("logoScale", s.logoScale);
   set("logoStroke", s.logoStroke);
   set("print-cm", s.printCm);
@@ -136,6 +134,8 @@ function syncUi() {
   $("eyeColor").disabled = !$("eye-custom").checked;
   $("logo-opts").hidden = !state.icon;
   $("ec-hint").hidden = !state.icon;
+  // A logo forces High: show it, but remember the user's own choice for when the logo is removed.
+  $("error").value = state.icon ? "H" : state.errorChoice;
   $("error").disabled = !!state.icon;
   for (const id of ["border", "logoScale", "logoStroke"]) {
     $(id).parentElement!.querySelector("output")!.textContent =
@@ -263,12 +263,12 @@ $("dl-png").addEventListener("click", () =>
 );
 
 // --- wiring ----------------------------------------------------------------
-// Keep the logo backing in sync with the background until the user picks one.
-let logoBgTouched = false;
-$("logoBg").addEventListener("input", () => (logoBgTouched = true));
-$("bg").addEventListener("input", () => {
-  if (!logoBgTouched) $("logoBg").value = $("bg").value;
-});
+$("error").addEventListener("input", () => (state.errorChoice = $("error").value as Settings["error"]));
+
+// The logo colors follow the code colors, one way only: changing Foreground/Background also
+// sets the logo's Foreground/Background, while changing the logo colors never touches the code.
+$("fg").addEventListener("input", () => ($("logoColor").value = $("fg").value));
+$("bg").addEventListener("input", () => ($("logoBg").value = $("bg").value));
 
 document.querySelectorAll<HTMLElement>("#form input, #form select, #form textarea").forEach((el) => {
   if (el.id !== "icon-search") el.addEventListener("input", schedule);

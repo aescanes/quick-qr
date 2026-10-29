@@ -4,8 +4,8 @@ Make good-looking QR codes from text or URLs. One TypeScript codebase runs as a 
 
 - **Colors**: foreground, background (or transparent), gradients (horizontal / vertical / diagonal / radial), separate corner-eye color
 - **Styles**: square, rounded, dots, diamond, vertical bars, horizontal bars; square, rounded or circle corner eyes
-- **Logo**: any icon from [Lucide](https://lucide.dev) (~2,200 bundled, works offline), with custom color, size, stroke and backing
-- **Export**: SVG (vector) or PNG (512 to 4096 px)
+- **Logo**: any icon from [Lucide](https://lucide.dev) (~2,200 bundled, works offline), with its own foreground/background colors (they follow the code's colors whenever those change, never the other way round), size and stroke
+- **Export**: SVG (vector) or PNG (256 to 4096 px)
 
 ## Develop
 

@@ -17,58 +17,89 @@
     <section class="card">
       <h2>Content</h2>
       <textarea id="data" rows="3" placeholder="https://example.com or any text" spellcheck="false">https://github.com</textarea>
-      <label class="row">Error correction
+      <div class="fieldrow">
+        <div class="lbl">
+          <label for="error">Error correction</label>
+          <div class="info-wrap">
+            <button type="button" class="info" aria-label="What is error correction?" aria-describedby="ec-tip">?</button>
+            <div role="tooltip" id="ec-tip" class="tip">
+              <strong>Error correction</strong> lets a QR code still scan when part of it is dirty, scratched or covered, for example by a logo.
+              Higher levels survive more damage but add more dots, so the code gets denser.
+              <ul>
+                <li><b>Low</b>: up to 7% unreadable</li>
+                <li><b>Medium</b>: 15% (good default)</li>
+                <li><b>Quartile</b>: 25%</li>
+                <li><b>High</b>: 30% (used automatically with a logo)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <select id="error">
           <option value="L">Low (7%)</option>
           <option value="M" selected>Medium (15%)</option>
           <option value="Q">Quartile (25%)</option>
           <option value="H">High (30%)</option>
         </select>
-      </label>
-      <p class="hint" id="ec-hint" hidden>A logo is set, so High is used automatically.</p>
+      </div>
+      <p class="hint" id="ec-hint" hidden>A logo is set, so High is used automatically. Your choice comes back if you remove the logo.</p>
     </section>
 
     <section class="card">
       <h2>Colors</h2>
-      <div class="grid2">
-        <label>Foreground <input type="color" id="fg" value="#111827"></label>
-        <label>Background <input type="color" id="bg" value="#ffffff"></label>
+      <div class="sub">
+        <h3>Color</h3>
+        <div class="grid2">
+          <label>Foreground <input type="color" id="fg" value="#111827"></label>
+          <label>Background <input type="color" id="bg" value="#ffffff"></label>
+        </div>
+        <label class="check"><input type="checkbox" id="transparent"> Transparent background</label>
       </div>
-      <label class="check"><input type="checkbox" id="transparent"> Transparent background</label>
-      <label class="row">Gradient
-        <select id="gradient">
-          <option value="none">None</option>
-          <option value="horizontal">Horizontal</option>
-          <option value="vertical">Vertical</option>
-          <option value="diagonal">Diagonal</option>
-          <option value="radial">Radial</option>
-        </select>
-      </label>
-      <label id="fg2-wrap" hidden>Gradient end color <input type="color" id="fg2" value="#7c3aed"></label>
-      <label class="check"><input type="checkbox" id="eye-custom"> Custom corner-eye color
-        <input type="color" id="eyeColor" value="#7c3aed" disabled></label>
+      <div class="sub">
+        <h3>Gradient</h3>
+        <label class="row">Direction
+          <select id="gradient">
+            <option value="none">None</option>
+            <option value="horizontal">Horizontal</option>
+            <option value="vertical">Vertical</option>
+            <option value="diagonal">Diagonal</option>
+            <option value="radial">Radial</option>
+          </select>
+        </label>
+        <label id="fg2-wrap" class="row" hidden>End color <input type="color" id="fg2" value="#7c3aed"></label>
+      </div>
+      <div class="sub">
+        <h3>Corner-eye color</h3>
+        <label class="check"><input type="checkbox" id="eye-custom"> Custom color
+          <input type="color" id="eyeColor" value="#7c3aed" disabled></label>
+      </div>
     </section>
 
     <section class="card">
       <h2>Style</h2>
-      <div class="field"><span>Dots</span>
-      <div class="seg" id="moduleStyle">
-        <button type="button" data-value="square" class="on">Square</button>
-        <button type="button" data-value="rounded">Rounded</button>
-        <button type="button" data-value="dots">Dots</button>
-        <button type="button" data-value="diamond">Diamond</button>
-        <button type="button" data-value="vertical">Vertical</button>
-        <button type="button" data-value="horizontal">Horizontal</button>
+      <div class="sub">
+        <h3>Dots</h3>
+        <div class="seg" id="moduleStyle">
+          <button type="button" data-value="square" class="on">Square</button>
+          <button type="button" data-value="rounded">Rounded</button>
+          <button type="button" data-value="dots">Dots</button>
+          <button type="button" data-value="diamond">Diamond</button>
+          <button type="button" data-value="vertical">Vertical</button>
+          <button type="button" data-value="horizontal">Horizontal</button>
+        </div>
       </div>
+      <div class="sub">
+        <h3>Corner eyes</h3>
+        <div class="seg" id="eyeStyle">
+          <button type="button" data-value="square" class="on">Square</button>
+          <button type="button" data-value="rounded">Rounded</button>
+          <button type="button" data-value="circle">Circle</button>
+        </div>
       </div>
-      <div class="field"><span>Corner eyes</span>
-      <div class="seg" id="eyeStyle">
-        <button type="button" data-value="square" class="on">Square</button>
-        <button type="button" data-value="rounded">Rounded</button>
-        <button type="button" data-value="circle">Circle</button>
+      <div class="sub">
+        <h3>Margin</h3>
+        <label class="row wide"><input type="range" id="border" min="0" max="10" value="4"><output></output></label>
+        <p class="hint">Blank border around the code, in dots (4 is the standard).</p>
       </div>
-      </div>
-      <label class="row">Margin <input type="range" id="border" min="0" max="10" value="4"><output></output></label>
     </section>
 
     <section class="card">
@@ -81,8 +112,8 @@
       <p class="hint" id="icon-count"></p>
       <div id="logo-opts" hidden>
         <div class="grid2">
-          <label>Icon color <input type="color" id="logoColor" value="#111827"></label>
-          <label>Icon backing <input type="color" id="logoBg" value="#ffffff"></label>
+          <label>Foreground <input type="color" id="logoColor" value="#111827"></label>
+          <label>Background <input type="color" id="logoBg" value="#ffffff"></label>
         </div>
         <label class="row">Size <input type="range" id="logoScale" min="0.08" max="0.28" step="0.01" value="0.22"><output></output></label>
         <label class="row">Stroke <input type="range" id="logoStroke" min="0.5" max="3" step="0.25" value="2"><output></output></label>

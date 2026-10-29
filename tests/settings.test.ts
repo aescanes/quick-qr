@@ -4,7 +4,7 @@ import { STORAGE_KEY, clearSettings, loadSettings, parseSettings, saveSettings, 
 const full: Settings = {
   data: "https://example.com", error: "Q", fg: "#112233", fg2: "#445566", gradient: "radial", bg: "#ffffff",
   transparent: true, eyeCustom: true, eyeColor: "#aa0000", moduleStyle: "dots", eyeStyle: "circle", border: 2,
-  icon: "heart", logoColor: "#000000", logoBg: "#eeeeee", logoBgTouched: true, logoScale: 0.2, logoStroke: 1.5,
+  icon: "heart", logoColor: "#000000", logoBg: "#eeeeee", logoScale: 0.2, logoStroke: 1.5,
   printCm: 5, printDpi: 300, pngSize: 591,
 };
 
