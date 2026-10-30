@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Light and dark themes with a header toggle; follows the system theme until you choose one.
+- Contrast warning when the dots are lighter than the background or hard to scan.
+- Hex input and color presets for every color; logo icon color and badge can follow the dots and background.
+- Logo search covers all Lucide icons and matches names and tags.
+
+### Changed
+
+- New QuickQR design: Geist fonts, new logo and app icons, redesigned layout and controls.
+
 ## [0.3.0](https://github.com/aescanes/quick-qr/releases/tag/v0.3.0) - 2026-10-29
 
 ### Changed

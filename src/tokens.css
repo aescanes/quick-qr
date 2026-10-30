@@ -1,0 +1,120 @@
+/* QuickQR design tokens. Import once, before any component styles. */
+
+@font-face {
+  font-family: "Geist";
+  src: url("./fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("./fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  /* Color */
+  --qq-ink: #12141A;          /* text, dark UI, selected pills */
+  --qq-accent: #3355FF;       /* Signal Blue: primary button, "QR" in wordmark, focus ring */
+  --qq-accent-hover: #1F3FD6;
+  --qq-accent-on-dark: #7C93FF;
+  --qq-accent-tint: #EEF1FF;  /* selected icon tile, small badges */
+  --qq-accent-tint-ink: #2440C7;
+  --qq-page: #EEF0F3;         /* page background, inset panels */
+  --qq-surface: #FFFFFF;      /* cards */
+  --qq-tile: #F5F6F8;         /* icon grid tiles */
+  --qq-line: #DCE0E6;         /* card borders, dividers */
+  --qq-line-soft: #E9ECF0;    /* row dividers inside cards */
+  --qq-control-border: #CDD2DA;
+  --qq-muted: #5B6170;        /* secondary text (6.4:1 on white) */
+  --qq-warn-bg: #FFF4E5;
+  --qq-warn-ink: #7A4100;
+  --qq-error: #C2410C;        /* invalid hex border */
+
+  /* Type */
+  --qq-font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --qq-font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --qq-text-wordmark: 700 48px/1 var(--qq-font);   /* letter-spacing: -0.035em */
+  --qq-text-tagline: 500 22px/1.3 var(--qq-font);  /* letter-spacing: -0.01em */
+  --qq-text-lead: 400 16px/1.6 var(--qq-font);
+  --qq-text-h2: 600 16px/1.3 var(--qq-font);
+  --qq-text-body: 400 14px/1.5 var(--qq-font);
+  --qq-text-label: 500 13px/1.4 var(--qq-font);
+  --qq-text-control: 500 14px/1 var(--qq-font);
+  --qq-text-mono: 500 12px/1.4 var(--qq-font-mono);
+
+  /* Space and shape */
+  --qq-gap-1: 4px;
+  --qq-gap-2: 8px;
+  --qq-gap-3: 12px;
+  --qq-gap-4: 16px;
+  --qq-gap-5: 24px;
+  --qq-gap-6: 36px;
+  --qq-radius-sm: 10px;   /* pills, inputs, buttons */
+  --qq-radius-md: 12px;   /* primary button, icon tiles, inset panels */
+  --qq-radius-lg: 16px;   /* section cards */
+  --qq-radius-xl: 20px;   /* preview card */
+  --qq-target: 44px;      /* minimum touch target */
+  --qq-content-max: 1200px;
+
+  --qq-shadow-card: 0 1px 2px rgba(18, 20, 26, 0.05);   /* section + preview cards; none in dark */
+  --qq-shadow-qr: 0 1px 2px rgba(18, 20, 26, 0.06), 0 8px 24px rgba(18, 20, 26, 0.08);
+  --qq-focus: 0 0 0 2px var(--qq-surface), 0 0 0 4px var(--qq-accent);
+
+  /* Theme-aware aliases (use these in components) */
+  --qq-on-ink: #FFFFFF;            /* text on a selected (ink) pill */
+  --qq-accent-text: #3355FF;       /* accent used as TEXT/borders: wordmark "QR", selected icon, links, focus */
+  --qq-swatch-ring: rgba(18, 20, 26, 0.18);
+  color-scheme: light;
+}
+
+/* ---------- Dark theme ----------
+   Applied when <html data-theme="dark">, or when the OS prefers dark and the
+   user hasn't picked a theme (data-theme="system" or attribute absent).
+   The QR code itself is NOT themed: it keeps the user's chosen colors. */
+:root[data-theme="dark"] {
+  --qq-ink: #ECEEF2;
+  --qq-on-ink: #12141A;
+  --qq-page: #0E1015;
+  --qq-surface: #171A21;
+  --qq-tile: #1D2029;
+  --qq-line: #2A2E38;
+  --qq-line-soft: #232731;
+  --qq-control-border: #3A3F4B;
+  --qq-muted: #9BA1AE;          /* 6.6:1 on surface */
+  --qq-accent-text: #8FA2FF;    /* 7.3:1 on surface */
+  --qq-accent-hover: #C3CDFF;
+  --qq-accent-tint: #1F2A5C;
+  --qq-accent-tint-ink: #C3CDFF;
+  --qq-warn-bg: #3A2A12;
+  --qq-warn-ink: #FFD08A;
+  --qq-swatch-ring: rgba(255, 255, 255, 0.22);
+  --qq-shadow-card: none;
+  --qq-shadow-qr: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+  /* --qq-accent (#3355FF) stays the same: primary button bg with white text */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    --qq-ink: #ECEEF2;
+    --qq-on-ink: #12141A;
+    --qq-page: #0E1015;
+    --qq-surface: #171A21;
+    --qq-tile: #1D2029;
+    --qq-line: #2A2E38;
+    --qq-line-soft: #232731;
+    --qq-control-border: #3A3F4B;
+    --qq-muted: #9BA1AE;
+    --qq-accent-text: #8FA2FF;
+    --qq-accent-hover: #C3CDFF;
+    --qq-accent-tint: #1F2A5C;
+    --qq-accent-tint-ink: #C3CDFF;
+    --qq-warn-bg: #3A2A12;
+    --qq-warn-ink: #FFD08A;
+    --qq-swatch-ring: rgba(255, 255, 255, 0.22);
+    --qq-shadow-card: none;
+  --qq-shadow-qr: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
