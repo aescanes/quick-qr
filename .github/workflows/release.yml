@@ -83,7 +83,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ inputs.tag || github.ref_name }}
-          releaseName: "QuickQR ${{ inputs.tag || github.ref_name }}"
+          releaseName: ${{ inputs.tag || github.ref_name }}
           releaseBody: ${{ needs.notes.outputs.body }}
           releaseDraft: true
           args: ${{ matrix.args }}
