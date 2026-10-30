@@ -10,11 +10,9 @@
 #     tags: ["v*"]
 name: Release
 on:
+  push:
+    tags: ["v*"]
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "Existing tag to release (e.g. v0.2.0)"
-        required: true
 
 # Never run two releases at once; let a running one finish instead of cancelling it.
 concurrency:
