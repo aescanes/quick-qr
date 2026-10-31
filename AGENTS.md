@@ -42,7 +42,7 @@ form controls (src/main.ts)
 | `src/generated/icons.json` | **Generated, gitignored.** Lucide icon name -> inner SVG markup, built from `lucide-static` by `scripts/build-icons.mjs`. Loaded lazily via dynamic `import()`. |
 | `tests/render.test.ts` | Vitest suite for the renderer (all style combos, gradients, logo, validation). |
 | `src-tauri/` | Tauri 2 shell. Rust only hosts the webview and registers the `dialog` and `fs` plugins (`src/lib.rs`). Permissions are limited in `capabilities/default.json`; CSP is in `tauri.conf.json`. |
-| `.github/workflows/` | `ci.yml` (test + build), `pages.yml` (web build to GitHub Pages; runs only on `v*` tags and only after the tests pass), `release.yml` (desktop installers for all OSes; **currently disabled**: manual-only via `workflow_dispatch`, the `v*` tag trigger is paused until the UI/web work is done). |
+| `.github/workflows/` | `ci.yml` (test + build), `pages.yml` (web build to GitHub Pages; runs only on `v*` tags and only after the tests pass), `release.yml` (runs on `v*` tags, or manually via `workflow_dispatch`; tests first, then builds desktop installers for all OSes into a **draft** GitHub release whose body is the matching `CHANGELOG.md` section via `scripts/release-notes.mjs`, and attests build provenance). |
 | `legacy/python/` | Earlier Python/Flask prototype. Unused by the app; safe to delete. |
 
 ### Key design decisions

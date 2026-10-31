@@ -2,6 +2,8 @@
 
 Make good-looking QR codes from text or URLs. One TypeScript codebase runs as a **web app** and as a native **desktop app** (macOS, Windows, Linux) via [Tauri](https://tauri.app). Everything runs on your device; nothing is uploaded.
 
+**Try it online: <https://aescanes.github.io/quick-qr/>**
+
 - **Colors**: foreground, background (or transparent), gradients (horizontal / vertical / diagonal / radial), separate corner-eye color
 - **Styles**: square, rounded, dots, diamond, vertical bars, horizontal bars; square, rounded or circle corner eyes
 - **Logo**: any icon from [Lucide](https://lucide.dev) (~2,200 bundled, works offline), with its own foreground/background colors (they follow the code's colors whenever those change, never the other way round), size and stroke
@@ -39,8 +41,8 @@ With a logo set, error correction is forced to **High (30%)** and the modules un
 
 ## Releases
 
-- Desktop releases are **paused** while the UI and web version are being built. `.github/workflows/release.yml` (installers for macOS, Windows and Linux into a draft GitHub release) only runs when started manually; the `v*` tag trigger will be restored later.
-- Pushing a version tag like `v0.1.0` publishes the web build to GitHub Pages (`.github/workflows/pages.yml`), but only if the tests pass. Ordinary pushes to `main` do not deploy. One-time setup: Settings ▸ Pages ▸ Source: **GitHub Actions**, and in Settings ▸ Environments ▸ `github-pages` add a deployment tag rule `v*`.
+- Pushing a version tag like `v0.1.0` builds the desktop installers (macOS Apple Silicon + Intel, Windows, Linux) with `.github/workflows/release.yml`, but only if the tests pass. They are attached to a **draft** GitHub release whose notes are the matching `CHANGELOG.md` section (the build fails if it is missing); review and publish the draft by hand. The workflow can also be started manually from the Actions tab. Installers carry a build provenance attestation: `gh attestation verify <installer> --repo aescanes/quick-qr`.
+- The same tag also publishes the web build to GitHub Pages (`.github/workflows/pages.yml`), but only if the tests pass. Ordinary pushes to `main` do not deploy. One-time setup: Settings ▸ Pages ▸ Source: **GitHub Actions**, and in Settings ▸ Environments ▸ `github-pages` add a deployment tag rule `v*`.
 - Installers are unsigned. macOS and Windows will show a first-run warning until you add signing certificates.
 
 ## Scanning tips
