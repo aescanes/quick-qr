@@ -1,6 +1,9 @@
-# QuickQR
+<h1><img src="docs/images/wordmark.svg" alt="QuickQR" height="56"></h1>
 
 Make good-looking QR codes from text or URLs. One TypeScript codebase runs as a **web app** and as a native **desktop app** (macOS, Windows, Linux) via [Tauri](https://tauri.app). Everything runs on your device; nothing is uploaded.
+
+![QuickQR page](/docs/images/quickqr-page.png)
+
 
 **Try it online: <https://aescanes.github.io/quick-qr/>**
 
